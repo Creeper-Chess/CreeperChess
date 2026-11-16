@@ -5,298 +5,349 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Creeper Chess</title>
-
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #050914, #101d38);
-    color: white;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.container {
-    width: 100%;
-    max-width: 440px;
-    background: #111d32;
-    border: 1px solid #263c60;
-    border-radius: 18px;
-    padding: 35px;
-    box-shadow: 0 15px 50px #0008;
-}
-
-.logo {
-    text-align: center;
-    font-size: 34px;
-    font-weight: bold;
-    color: #48a5ff;
-    margin-bottom: 8px;
-}
-
-.subtitle {
-    text-align: center;
-    color: #9aabc5;
-    margin-bottom: 28px;
-}
-
-.tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
-}
-
-.tabs button {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background: #1c2b44;
-    color: white;
-    cursor: pointer;
-    font-size: 15px;
-}
-
-.tabs button.active {
-    background: #1685ed;
-}
-
-h2 {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    margin: 13px 0 7px;
-    color: #c6d4e9;
-    font-size: 14px;
-}
-
-input, select {
-    width: 100%;
-    padding: 13px;
-    background: #091426;
-    border: 1px solid #304563;
-    border-radius: 8px;
-    color: white;
-    outline: none;
-    font-size: 15px;
-}
-
-input:focus, select:focus {
-    border-color: #2999ff;
-}
-
-.main-button {
-    width: 100%;
-    padding: 14px;
-    margin-top: 22px;
-    background: #1685ed;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.main-button:hover {
-    background: #0870d2;
-}
-
-.forgot {
-    display: block;
-    text-align: right;
-    margin-top: 13px;
-    color: #56aaff;
-    font-size: 13px;
-    cursor: pointer;
-}
-
-.hidden {
-    display: none;
-}
-
-.message {
-    margin-top: 15px;
-    color: #65b6ff;
-    text-align: center;
-    font-size: 14px;
-}
-
-.footer {
-    text-align: center;
-    color: #7387a5;
-    margin-top: 25px;
-    font-size: 12px;
-}
+*{box-sizing:border-box}
+body{margin:0;background:#080e1c;color:white;font-family:Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer;border:0;border-radius:8px;padding:11px 16px;color:white;background:#1c2e4b}
+button:hover{filter:brightness(1.2)}
+.primary,.active{background:#1688ef}
+header{background:#101c32;border-bottom:1px solid #263b5c;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{font-size:25px;font-weight:bold;color:#4da6ff}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+main{max-width:1100px;margin:auto;padding:30px 18px}
+.panel{background:#111e33;border:1px solid #263d60;border-radius:16px;padding:25px;margin-bottom:20px}
+.center{text-align:center}
+.hidden{display:none!important}
+h1,h2,h3{margin-top:0}
+.muted{color:#9aabc5}
+input,select{width:100%;padding:13px;margin:7px 0 15px;background:#091426;color:white;border:1px solid #304766;border-radius:8px}
+label{display:block;color:#b8c9e1;font-size:14px}
+.form{max-width:440px;margin:45px auto}
+.form button{width:100%;margin-top:8px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px}
+.menu-card{background:#172843;border:1px solid #2b456a;border-radius:13px;padding:23px;text-align:left;min-height:130px}
+.menu-card strong{display:block;font-size:19px;margin-bottom:10px}
+.menu-card span{color:#a9bad2;font-size:13px}
+.menu-card .emoji{font-size:29px;display:block;margin-bottom:12px}
+.board{display:grid;grid-template-columns:repeat(8,1fr);width:min(100%,520px);aspect-ratio:1;margin:20px auto;border:5px solid #765038;overflow:hidden}
+.square{border-radius:0;padding:0;display:flex;align-items:center;justify-content:center;font-size:clamp(22px,6vw,48px);aspect-ratio:1;color:#111}
+.light{background:#efdfc1}
+.dark{background:#95613f}
+.square.selected{outline:4px solid #1688ef;outline-offset:-4px}
+.status{text-align:center;color:#a9c9ee;margin:12px}
+footer{text-align:center;color:#647894;padding:30px}
+@media(max-width:550px){header{justify-content:center}.logo{width:100%;text-align:center}nav{justify-content:center}.panel{padding:17px}}
 </style>
 </head>
-
 <body>
+<header>
+<div class="logo">♟ CREEPER CHESS</div>
+<nav id="navigation" class="hidden">
+<button onclick="showPage('dashboard')">Home</button>
+<button onclick="showPage('game')">Play</button>
+<button onclick="showPage('leaderboard')">Leaderboard</button>
+<button onclick="showPage('profile')">Profile</button>
+<button onclick="showPage('settings')">Settings</button>
+<button onclick="logout()">Log Out</button>
+</nav>
+</header>
+<main>
 
-<div class="container">
-
-    <div class="logo">♟ CREEPER CHESS</div>
-    <p class="subtitle">Your next move starts here.</p>
-
-    <div class="tabs">
-        <button id="loginTab" class="active"
-        onclick="showLogin()">Log In</button>
-
-        <button id="signupTab"
-        onclick="showSignup()">Sign Up</button>
-    </div>
-
-    <!-- LOGIN SCREEN -->
-
-    <div id="loginScreen">
-
-        <h2>Welcome Back!</h2>
-
-        <form onsubmit="login(event)">
-
-            <label>Username or Email</label>
-            <input type="text"
-            id="loginUser"
-            placeholder="Enter username or email"
-            required>
-
-            <label>Password</label>
-            <input type="password"
-            id="loginPassword"
-            placeholder="Enter your password"
-            required>
-
-            <span class="forgot"
-            onclick="forgotPassword()">
-            Forgot Password?
-            </span>
-
-            <button class="main-button" type="submit">
-                Log In
-            </button>
-
-        </form>
-
-    </div>
-
-    <!-- SIGNUP SCREEN -->
-
-    <div id="signupScreen" class="hidden">
-
-        <h2>Create Your Account</h2>
-
-        <form onsubmit="signup(event)">
-
-            <label>Email Address</label>
-            <input type="email"
-            id="signupEmail"
-            placeholder="Enter your email"
-            required>
-
-            <label>Username</label>
-            <input type="text"
-            id="signupUsername"
-            placeholder="Choose a username"
-            required>
-
-            <label>Password</label>
-            <input type="password"
-            id="signupPassword"
-            placeholder="Create a password"
-            minlength="8"
-            required>
-
-            <label>Select Your Region</label>
-            <select id="region" required>
-                <option value="">Choose your region</option>
-                <option>North America</option>
-                <option>South America</option>
-                <option>Europe</option>
-                <option>Asia</option>
-                <option>Africa</option>
-                <option>Oceania</option>
-                <option>Other</option>
-            </select>
-
-            <label>Chess Experience</label>
-            <select id="experience" required>
-                <option value="">Choose your level</option>
-                <option>Beginner</option>
-                <option>Intermediate</option>
-                <option>Advanced</option>
-                <option>Expert</option>
-            </select>
-
-            <button class="main-button" type="submit">
-                Create Account
-            </button>
-
-        </form>
-
-    </div>
-
-    <p id="message" class="message"></p>
-
-    <div class="footer">
-        CREEPER CHESS © 2026
-        <br><br>
-        Make your move.
-    </div>
-
+<section id="login" class="form panel">
+<div class="center">
+<h1 style="color:#4da6ff">♟ CREEPER CHESS</h1>
+<p class="muted">Your next move starts here.</p>
 </div>
+<div class="cards" style="grid-template-columns:1fr 1fr">
+<button class="primary" onclick="showAuth('login')">Log In</button>
+<button onclick="showAuth('signup')">Sign Up</button>
+</div>
+<div id="loginForm">
+<h2>Welcome Back!</h2>
+<label>Username or Email</label>
+<input id="loginName" placeholder="Enter username or email">
+<label>Password</label>
+<input id="loginPass" type="password" placeholder="Password">
+<button class="primary" onclick="loginUser()">Log In</button>
+<p class="muted center" onclick="alert('Password recovery requires an account backend.')">Forgot Password?</p>
+</div>
+<div id="signupForm" class="hidden">
+<h2>Create Account</h2>
+<label>Email</label>
+<input id="newEmail" type="email" placeholder="Email address">
+<label>Username</label>
+<input id="newName" placeholder="Choose a username">
+<label>Password</label>
+<input id="newPass" type="password" placeholder="At least 8 characters">
+<label>Region</label>
+<select id="region">
+<option value="">Select your region</option>
+<option>North America</option><option>South America</option>
+<option>Europe</option><option>Asia</option>
+<option>Africa</option><option>Oceania</option>
+</select>
+<label>Chess Experience</label>
+<select id="level">
+<option>Beginner</option><option>Intermediate</option>
+<option>Advanced</option><option>Expert</option>
+</select>
+<button class="primary" onclick="signupUser()">Create Account</button>
+</div>
+<p id="authMessage" class="status"></p>
+<p class="muted center" style="font-size:12px">Demo account interface. Secure accounts require a backend.</p>
+</section>
+
+<section id="dashboard" class="hidden">
+<div class="panel center">
+<h1>Welcome back, <span id="welcomeName">Player</span>!</h1>
+<p class="muted">Ready to make your next move?</p>
+</div>
+<div class="cards">
+<button class="menu-card" onclick="showPage('game')"><span class="emoji">🌎</span><strong>Play Online</strong><span>Online multiplayer coming soon.</span></button>
+<button class="menu-card" onclick="showPage('friend')"><span class="emoji">🤝</span><strong>Play a Friend</strong><span>Play on the same device.</span></button>
+<button class="menu-card" onclick="showPage('opponents')"><span class="emoji">🤖</span><strong>Play AI</strong><span>Challenge a computer opponent.</span></button>
+<button class="menu-card" onclick="showPage('leaderboard')"><span class="emoji">🏆</span><strong>Leaderboards</strong><span>See player rankings.</span></button>
+<button class="menu-card" onclick="showPage('profile')"><span class="emoji">👤</span><strong>My Profile</strong><span>Your player information.</span></button>
+<button class="menu-card" onclick="showPage('settings')"><span class="emoji">⚙️</span><strong>Settings</strong><span>Customize your experience.</span></button>
+</div>
+</section>
+
+<section id="opponents" class="hidden">
+<div class="panel">
+<h1>Choose Your Opponent</h1>
+<div class="cards">
+<button class="menu-card" onclick="startGame('Marcus')"><span class="emoji">🧑</span><strong>Marcus</strong><span>Chess opponent</span></button>
+<button class="menu-card" onclick="startGame('Emily')"><span class="emoji">👩</span><strong>Emily</strong><span>Chess opponent</span></button>
+<button class="menu-card" onclick="startGame('Elijah')"><span class="emoji">🧔</span><strong>Elijah</strong><span>Chess opponent</span></button>
+<button class="menu-card" onclick="startGame('Creeper')"><span class="emoji">🟩</span><strong>Creeper</strong><span>Special opponent</span></button>
+</div>
+</div>
+</section>
+
+<section id="friend" class="hidden">
+<div class="panel center">
+<h1>Play a Friend</h1>
+<p>Play together on the same device.</p>
+<button class="primary" onclick="startGame('Friend')">Start Local Friend Game</button>
+</div>
+</section>
+
+<section id="game" class="hidden">
+<div class="panel center">
+<h1 id="gameTitle">Chess Game</h1>
+<p id="turn" class="status">White's turn</p>
+<div id="board" class="board"></div>
+<p id="gameStatus" class="status">Select a piece, then select a destination.</p>
+<button onclick="resetGame()">New Game</button>
+<button onclick="showPage('dashboard')">Back to Home</button>
+</div>
+</section>
+
+<section id="leaderboard" class="hidden">
+<div class="panel">
+<h1>🏆 Leaderboards</h1>
+<p class="muted">Demo rankings.</p>
+<div id="rankings"></div>
+</div>
+</section>
+
+<section id="profile" class="hidden">
+<div class="panel">
+<h1>My Profile</h1>
+<p>Username: <strong id="profileName"></strong></p>
+<p>Email: <strong id="profileEmail"></strong></p>
+<p>Region: <strong id="profileRegion"></strong></p>
+<p>Experience: <strong id="profileLevel"></strong></p>
+<p>Wins: <strong id="wins">0</strong></p>
+</div>
+</section>
+
+<section id="settings" class="hidden">
+<div class="panel">
+<h1>Settings</h1>
+<h3>Choose Your Theme</h3>
+<select id="theme" onchange="changeTheme()">
+<option value="original">Original Creeper Chess</option>
+<option value="medieval">Medieval Theme</option>
+<option value="midnight">Midnight Blue</option>
+</select>
+<p class="muted">Original board colors: brown and cream.</p>
+<button onclick="showPage('dashboard')">Save and Return Home</button>
+</div>
+</section>
+
+</main>
+<footer>CREEPER CHESS © 2026 · Make Your Move.</footer>
 
 <script>
+let currentUser=null;
+let opponent="Opponent";
+let selected=null;
+let whiteTurn=true;
+let boardState=[];
+let wins=0;
+const pieces={wK:"♔",wQ:"♕",wR:"♖",wB:"♗",wN:"♘",wP:"♙",bK:"♚",bQ:"♛",bR:"♜",bB:"♝",bN:"♞",bP:"♟"};
 
-function showLogin() {
-    document.getElementById("loginScreen").classList.remove("hidden");
-    document.getElementById("signupScreen").classList.add("hidden");
-
-    document.getElementById("loginTab").classList.add("active");
-    document.getElementById("signupTab").classList.remove("active");
-
-    document.getElementById("message").textContent = "";
+function showPage(page){
+document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+document.getElementById(page).classList.remove("hidden");
+if(page==="profile")updateProfile();
+if(page==="leaderboard")updateRanks();
+if(page==="game")renderBoard();
 }
-
-function showSignup() {
-    document.getElementById("signupScreen").classList.remove("hidden");
-    document.getElementById("loginScreen").classList.add("hidden");
-
-    document.getElementById("signupTab").classList.add("active");
-    document.getElementById("loginTab").classList.remove("active");
-
-    document.getElementById("message").textContent = "";
+function showAuth(type){
+document.getElementById("loginForm").classList.toggle("hidden",type!=="login");
+document.getElementById("signupForm").classList.toggle("hidden",type!=="signup");
+document.getElementById("authMessage").textContent="";
 }
-
-function login(event) {
-    event.preventDefault();
-
-    document.getElementById("message").textContent =
-    "Account authentication will be connected soon!";
+function loginUser(){
+let name=document.getElementById("loginName").value.trim();
+let pass=document.getElementById("loginPass").value;
+let saved=JSON.parse(localStorage.getItem("creeperUser")||"null");
+if(!saved||((name!==saved.username)&&(name!==saved.email))||pass!==saved.password){
+document.getElementById("authMessage").textContent="Demo login details not found. Create an account first.";return;
 }
-
-function signup(event) {
-    event.preventDefault();
-
-    document.getElementById("message").textContent =
-    "Account creation and email verification will be connected soon!";
+currentUser=saved;enterDashboard();
 }
-
-function forgotPassword() {
-    document.getElementById("message").textContent =
-    "Password recovery will be available once accounts are connected.";
+function signupUser(){
+let user={
+username:document.getElementById("newName").value.trim(),
+email:document.getElementById("newEmail").value.trim(),
+password:document.getElementById("newPass").value,
+region:document.getElementById("region").value,
+level:document.getElementById("level").value
+};
+if(!user.username||!user.email||user.password.length<8||!user.region){
+document.getElementById("authMessage").textContent="Complete every field. Password must be at least 8 characters.";return;
 }
-
+localStorage.setItem("creeperUser",JSON.stringify(user));
+currentUser=user;enterDashboard();
+}
+function enterDashboard(){
+document.getElementById("navigation").classList.remove("hidden");
+document.getElementById("welcomeName").textContent=currentUser.username;
+showPage("dashboard");
+}
+function logout(){
+currentUser=null;
+document.getElementById("navigation").classList.add("hidden");
+showPage("login");
+}
+function updateProfile(){
+if(!currentUser)return;
+document.getElementById("profileName").textContent=currentUser.username;
+document.getElementById("profileEmail").textContent=currentUser.email;
+document.getElementById("profileRegion").textContent=currentUser.region;
+document.getElementById("profileLevel").textContent=currentUser.level;
+document.getElementById("wins").textContent=wins;
+}
+function updateRanks(){
+document.getElementById("rankings").innerHTML="<p>1. Creeper Chess Champion — 1500</p><p>2. ChessMaster — 1400</p><p>3. GrandPlayer — 1300</p><p>4. "+(currentUser?currentUser.username:"You")+" — 1000</p>";
+}
+function changeTheme(){
+let t=document.getElementById("theme").value;
+if(t==="medieval"){document.body.style.background="#21170f";document.body.style.color="#f4dfb5";}
+else if(t==="midnight"){document.body.style.background="#030d29";document.body.style.color="#d9eaff";}
+else{document.body.style.background="#080e1c";document.body.style.color="white";}
+}
+function startGame(name){
+opponent=name;resetGame();
+document.getElementById("gameTitle").textContent="Playing "+name;
+showPage("game");
+}
+function resetGame(){
+boardState=[
+["bR","bN","bB","bQ","bK","bB","bN","bR"],
+["bP","bP","bP","bP","bP","bP","bP","bP"],
+[null,null,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+["wP","wP","wP","wP","wP","wP","wP","wP"],
+["wR","wN","wB","wQ","wK","wB","wN","wR"]
+];
+whiteTurn=true;selected=null;
+document.getElementById("turn").textContent="White's turn";
+document.getElementById("gameStatus").textContent="Select a piece, then its destination.";
+renderBoard();
+}
+function renderBoard(){
+let el=document.getElementById("board");
+if(!el)return;
+el.innerHTML="";
+for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+let sq=document.createElement("button");
+sq.className="square "+((r+c)%2===0?"light":"dark");
+if(selected&&selected.r===r&&selected.c===c)sq.classList.add("selected");
+sq.textContent=pieces[boardState[r][c]]||"";
+sq.onclick=()=>clickSquare(r,c);
+el.appendChild(sq);
+}
+}
+function clickSquare(r,c){
+let piece=boardState[r][c];
+if(!selected){
+if(!piece||whiteTurn!==piece.startsWith("w"))return;
+selected={r,c};renderBoard();return;
+}
+let from=selected;
+if(from.r===r&&from.c===c){selected=null;renderBoard();return;}
+let moving=boardState[from.r][from.c];
+if(piece&&piece.startsWith(moving[0])){selected={r,c};renderBoard();return;}
+if(!validMove(from.r,from.c,r,c,moving)){
+document.getElementById("gameStatus").textContent="That move is not allowed.";
+selected=null;renderBoard();return;
+}
+let captured=boardState[r][c];
+boardState[r][c]=moving;boardState[from.r][from.c]=null;
+if(moving==="wP"&&r===0)boardState[r][c]="wQ";
+if(moving==="bP"&&r===7)boardState[r][c]="bQ";
+selected=null;whiteTurn=!whiteTurn;
+document.getElementById("turn").textContent=whiteTurn?"White's turn":"Black's turn";
+document.getElementById("gameStatus").textContent=captured?"Piece captured!":"Move made!";
+renderBoard();
+if(!whiteTurn&&opponent!=="Friend"&&opponent!=="Opponent")setTimeout(aiMove,500);
+}
+function validMove(fr,fc,tr,tc,p){
+let dr=tr-fr,dc=tc-fc,side=p[0],type=p[1],target=boardState[tr][tc];
+if(target&&target[0]===side)return false;
+let path=(sr,sc)=>{let r=fr+sr,c=fc+sc;while(r!==tr||c!==tc){if(boardState[r][c])return false;r+=sr;c+=sc;}return true;};
+if(type==="N")return(Math.abs(dr)===2&&Math.abs(dc)===1)||(Math.abs(dr)===1&&Math.abs(dc)===2);
+if(type==="K")return Math.max(Math.abs(dr),Math.abs(dc))===1;
+if(type==="P"){
+let dir=side==="w"?-1:1;
+if(dc===0&&!target&&dr===dir)return true;
+if(dc===0&&!target&&dr===2*dir&&fr===(side==="w"?6:1)&&!boardState[fr+dir][fc])return true;
+return Math.abs(dc)===1&&dr===dir&&target!==null;
+}
+if(type==="R"&&(dr===0||dc===0))return path(Math.sign(dr),Math.sign(dc));
+if(type==="B"&&Math.abs(dr)===Math.abs(dc))return path(Math.sign(dr),Math.sign(dc));
+if(type==="Q"&&(dr===0||dc===0||Math.abs(dr)===Math.abs(dc)))return path(Math.sign(dr),Math.sign(dc));
+return false;
+}
+function aiMove(){
+let moves=[];
+for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+let p=boardState[r][c];
+if(!p||p[0]!=="b")continue;
+for(let tr=0;tr<8;tr++)for(let tc=0;tc<8;tc++)if(validMove(r,c,tr,tc,p))moves.push({r,c,tr,tc});
+}
+if(!moves.length){
+document.getElementById("gameStatus").textContent="No available moves.";
+return;
+}
+let m=moves[Math.floor(Math.random()*moves.length)];
+let captured=boardState[m.tr][m.tc];
+boardState[m.tr][m.tc]=boardState[m.r][m.c];
+boardState[m.r][m.c]=null;
+if(captured&&captured==="wK")document.getElementById("gameStatus").textContent="Your king was captured!";
+else document.getElementById("gameStatus").textContent=opponent+" moved. Your turn!";
+whiteTurn=true;
+document.getElementById("turn").textContent="White's turn";
+renderBoard();
+}
+showAuth("login");
 </script>
-
 </body>
 </html>
