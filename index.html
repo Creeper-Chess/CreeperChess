@@ -1,9 +1,302 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Creeper Chess</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creeper Chess</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #050914, #101d38);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 440px;
+    background: #111d32;
+    border: 1px solid #263c60;
+    border-radius: 18px;
+    padding: 35px;
+    box-shadow: 0 15px 50px #0008;
+}
+
+.logo {
+    text-align: center;
+    font-size: 34px;
+    font-weight: bold;
+    color: #48a5ff;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #9aabc5;
+    margin-bottom: 28px;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.tabs button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #1c2b44;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.tabs button.active {
+    background: #1685ed;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin: 13px 0 7px;
+    color: #c6d4e9;
+    font-size: 14px;
+}
+
+input, select {
+    width: 100%;
+    padding: 13px;
+    background: #091426;
+    border: 1px solid #304563;
+    border-radius: 8px;
+    color: white;
+    outline: none;
+    font-size: 15px;
+}
+
+input:focus, select:focus {
+    border-color: #2999ff;
+}
+
+.main-button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 22px;
+    background: #1685ed;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.main-button:hover {
+    background: #0870d2;
+}
+
+.forgot {
+    display: block;
+    text-align: right;
+    margin-top: 13px;
+    color: #56aaff;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+.message {
+    margin-top: 15px;
+    color: #65b6ff;
+    text-align: center;
+    font-size: 14px;
+}
+
+.footer {
+    text-align: center;
+    color: #7387a5;
+    margin-top: 25px;
+    font-size: 12px;
+}
+</style>
 </head>
+
 <body>
-    <h1>Welcome to Creeper Chess</h1>
+
+<div class="container">
+
+    <div class="logo">♟ CREEPER CHESS</div>
+    <p class="subtitle">Your next move starts here.</p>
+
+    <div class="tabs">
+        <button id="loginTab" class="active"
+        onclick="showLogin()">Log In</button>
+
+        <button id="signupTab"
+        onclick="showSignup()">Sign Up</button>
+    </div>
+
+    <!-- LOGIN SCREEN -->
+
+    <div id="loginScreen">
+
+        <h2>Welcome Back!</h2>
+
+        <form onsubmit="login(event)">
+
+            <label>Username or Email</label>
+            <input type="text"
+            id="loginUser"
+            placeholder="Enter username or email"
+            required>
+
+            <label>Password</label>
+            <input type="password"
+            id="loginPassword"
+            placeholder="Enter your password"
+            required>
+
+            <span class="forgot"
+            onclick="forgotPassword()">
+            Forgot Password?
+            </span>
+
+            <button class="main-button" type="submit">
+                Log In
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- SIGNUP SCREEN -->
+
+    <div id="signupScreen" class="hidden">
+
+        <h2>Create Your Account</h2>
+
+        <form onsubmit="signup(event)">
+
+            <label>Email Address</label>
+            <input type="email"
+            id="signupEmail"
+            placeholder="Enter your email"
+            required>
+
+            <label>Username</label>
+            <input type="text"
+            id="signupUsername"
+            placeholder="Choose a username"
+            required>
+
+            <label>Password</label>
+            <input type="password"
+            id="signupPassword"
+            placeholder="Create a password"
+            minlength="8"
+            required>
+
+            <label>Select Your Region</label>
+            <select id="region" required>
+                <option value="">Choose your region</option>
+                <option>North America</option>
+                <option>South America</option>
+                <option>Europe</option>
+                <option>Asia</option>
+                <option>Africa</option>
+                <option>Oceania</option>
+                <option>Other</option>
+            </select>
+
+            <label>Chess Experience</label>
+            <select id="experience" required>
+                <option value="">Choose your level</option>
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+                <option>Expert</option>
+            </select>
+
+            <button class="main-button" type="submit">
+                Create Account
+            </button>
+
+        </form>
+
+    </div>
+
+    <p id="message" class="message"></p>
+
+    <div class="footer">
+        CREEPER CHESS © 2026
+        <br><br>
+        Make your move.
+    </div>
+
+</div>
+
+<script>
+
+function showLogin() {
+    document.getElementById("loginScreen").classList.remove("hidden");
+    document.getElementById("signupScreen").classList.add("hidden");
+
+    document.getElementById("loginTab").classList.add("active");
+    document.getElementById("signupTab").classList.remove("active");
+
+    document.getElementById("message").textContent = "";
+}
+
+function showSignup() {
+    document.getElementById("signupScreen").classList.remove("hidden");
+    document.getElementById("loginScreen").classList.add("hidden");
+
+    document.getElementById("signupTab").classList.add("active");
+    document.getElementById("loginTab").classList.remove("active");
+
+    document.getElementById("message").textContent = "";
+}
+
+function login(event) {
+    event.preventDefault();
+
+    document.getElementById("message").textContent =
+    "Account authentication will be connected soon!";
+}
+
+function signup(event) {
+    event.preventDefault();
+
+    document.getElementById("message").textContent =
+    "Account creation and email verification will be connected soon!";
+}
+
+function forgotPassword() {
+    document.getElementById("message").textContent =
+    "Password recovery will be available once accounts are connected.";
+}
+
+</script>
+
 </body>
 </html>
